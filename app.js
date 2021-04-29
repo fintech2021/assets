@@ -2,6 +2,7 @@
 
 const express = require("express");
 const mysql = require("mysql");
+const { networkInterfaces } = require("os");
 const path = require("path");
 var request = require("request");
 const dbconfig = require("./config/database.js");
@@ -48,11 +49,11 @@ app.get("/authResult", function (req, res) {
       console.error(err);
       throw err;
     } else {
-      var accessRequestResult = JSON.parse(body);
-      // console.log(accessRequestResult);
-      // res.render("resultChild", { data: accessRequestResult });
-      var accesstoken = accessRequestResult.access_token;
-      var userseqnum = accessRequestResult.user_seq_no;
+      var resultAuth = JSON.parse(body);
+      // console.log(requestAuth);
+      // res.render("resultChild", { data: requestAuth });
+      var accesstoken = resultAuth.access_token;
+      var userseqnum = resultAuth.user_seq_no;
       console.log("at: " + accesstoken + "usq: " + userseqnum);
 
       var option = {
@@ -70,18 +71,60 @@ app.get("/authResult", function (req, res) {
           console.error(err);
           throw err;
         } else {
-          var accessRequestResult2 = JSON.parse(body);
-          console.log(accessRequestResult2); // 출금 계좌 리스트
+          var resultAccount = JSON.parse(body);
+          console.log(resultAccount); // 출금 계좌 리스트
           var dname, dbank, daccountNo, fUseNum;
-          for (var i = 0; i < accessRequestResult2.res_list.length; i++){
-            dname = accessRequestResult2.res_list[i].account_holder_name;
-            dbank = accessRequestResult2.res_list[i].bank_name;
-            daccountNo = accessRequestResult2.res_list[i].account_num_masked;
-            fUseNum = accessRequestResult2.res_list[i].fintech_use_num;
-            console.log(dname + " * " + dbank + " * " + daccountNo  + " * " + fUseNum + "\n");
+          for (var i = 0; i < resultAccount.res_list.length; i++) {
+            dname = resultAccount.res_list[i].account_holder_name;
+            dbank = resultAccount.res_list[i].bank_name;
+            daccountNo = resultAccount.res_list[i].account_num_masked;
+            fUseNum = resultAccount.res_list[i].fintech_use_num;
+
+            var countnum = Math.floor(Math.random() * 899999999) + 100000000;
+            console.log(countnum);
+            var transId = "M202112115U" + countnum; //이용기과번호 본인것 입력
+
+            var option = {
+              method: "GET",
+              url:
+                "https://testapi.openbanking.or.kr/v2.0/account/balance/fin_num",
+              headers: {
+                Authorization: "Bearer " + accesstoken,
+              },
+              qs: {
+                bank_tran_id: transId,
+                fintech_use_num: fUseNum,
+                tran_dtime: "20210429123034",
+              },
+            };
+            request(option, function (err, response, body) {
+              if (err) {
+                console.error(err);
+                throw err;
+              } else {
+                var resultBalance = JSON.parse(body);
+                console.log(resultBalance);
+                //   res.json(resultBalance);
+              }
+            });
+
+            console.log(
+              dname +
+                " * " +
+                dbank +
+                " * " +
+                daccountNo +
+                " * " +
+                fUseNum +
+                " * " +
+                // balance +
+                "\n"
+            );
           }
-          res.json(dname + " * " + dbank + " * " + daccountNo  + " * " + fUseNum + "\n");
-          // res.json(accessRequestResult2);
+          res.json(
+            dname + " * " + dbank + " * " + daccountNo + " * " + fUseNum + "\n"
+          );
+          // res.json(requestAuth2);
         }
       });
     }
