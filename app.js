@@ -50,7 +50,7 @@ app.get("/authResult", function (req, res) {
     } else {
       var accessRequestResult = JSON.parse(body);
       // console.log(accessRequestResult);
-      res.render("resultChild", { data: accessRequestResult });
+      // res.render("resultChild", { data: accessRequestResult });
       var accesstoken = accessRequestResult.access_token;
       var userseqnum = accessRequestResult.user_seq_no;
       console.log("at: " + accesstoken + "usq: " + userseqnum);
@@ -71,7 +71,7 @@ app.get("/authResult", function (req, res) {
           throw err;
         } else {
           var accessRequestResult2 = JSON.parse(body);
-          console.log(accessRequestResult2);
+          console.log(accessRequestResult2); // 출금 계좌 리스트
           res.json(accessRequestResult2);
         }
       });
