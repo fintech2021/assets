@@ -122,7 +122,20 @@ app.get("/authResult", function (req, res) {
                 throw err;
               } else {
                 var resultBalance = JSON.parse(body);
-                console.log(resultBalance);
+                var dbalance = resultBalance.balance_amt;
+                console.log(dname + " * " + dbank + " * " + daccountNo  + " * " + fUseNum + " * " + dbalance + "\n");
+                var sql = "INSERT INTO iamdb.deposit VALUES (?,?,?,?,?,?,?,?,?)"
+                connection.query(
+                    sql, // excute sql
+                    [null, dname, dbank, daccountNo, dbalance, fUseNum, null, null, 10], // ? <- value
+                    function(err, result){
+                        if(err){
+                            console.error(err);
+                            res.json(0);
+                            throw err;
+                        }
+                })
+                // console.log(resultBalance);
                 //   res.json(resultBalance);
               }
             });
@@ -155,6 +168,14 @@ app.get("/showAllEquity", (req, res) => {
   connection.query("SELECT * from equity", (error, rows) => {
     if (error) throw error;
     console.log("equity info : ", rows);
+    res.send(rows);
+  });
+});
+
+app.get("/balance", (req, res) => {
+  connection.query("SELECT * from deposit", (error, rows) => {
+    if (error) throw error;
+    console.log("User info is: ", rows);
     res.send(rows);
   });
 });
