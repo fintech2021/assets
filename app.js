@@ -21,6 +21,25 @@ app.get("/", (req, res) => {
   res.send("Root");
 });
 
+const data = [
+  {
+    eqcode: 123456,
+    name: "subin",
+    company: "syj",
+    count: 5,
+    selling_price: 1000,
+    purchasing_price: 2000,
+    total_price: 5000,
+    update_date: "2021-04-28T05:06:09.000Z",
+    input_date: "2021-04-28T05:06:09.000Z",
+    id: 1,
+  },
+];
+
+app.get("/test", (req, res) => {
+  res.send(data);
+});
+
 // 로그인 view
 app.get("/signup", function (req, res) {
   res.render("signup");
@@ -135,9 +154,8 @@ app.get("/authResult", function (req, res) {
 app.get("/showAllEquity", (req, res) => {
   connection.query("SELECT * from equity", (error, rows) => {
     if (error) throw error;
-    var a = rows[0].company;
-    console.log("deposit info : ", a);
-    res.send(a);
+    console.log("equity info : ", rows);
+    res.send(rows);
   });
 });
 
