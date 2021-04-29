@@ -72,7 +72,16 @@ app.get("/authResult", function (req, res) {
         } else {
           var accessRequestResult2 = JSON.parse(body);
           console.log(accessRequestResult2); // 출금 계좌 리스트
-          res.json(accessRequestResult2);
+          var dname, dbank, daccountNo, fUseNum;
+          for (var i = 0; i < accessRequestResult2.res_list.length; i++){
+            dname = accessRequestResult2.res_list[i].account_holder_name;
+            dbank = accessRequestResult2.res_list[i].bank_name;
+            daccountNo = accessRequestResult2.res_list[i].account_num_masked;
+            fUseNum = accessRequestResult2.res_list[i].fintech_use_num;
+            console.log(dname + " * " + dbank + " * " + daccountNo  + " * " + fUseNum + "\n");
+          }
+          res.json(dname + " * " + dbank + " * " + daccountNo  + " * " + fUseNum + "\n");
+          // res.json(accessRequestResult2);
         }
       });
     }
