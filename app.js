@@ -13,6 +13,116 @@ app.set("view engine", "ejs"); //select view templet engine
 
 app.use(express.static(path.join(__dirname, "public"))); //to use static asset
 
+const deposit = [
+  {
+    name: "최수영",
+    bank: "KB증권",
+    account: "07605579701069",
+    balance: "4,500,000",
+  },
+  {
+    name: "최수영",
+    bank: "키움증권",
+    account: "02093343701069",
+    balance: "9,300,000",
+  },
+];
+const sampletest = {
+
+  eqcode: "123456",
+    name: "subin",
+      company: "syj",
+        count: "5",
+          selling_price: "1000",
+            purchasing_price: "2000",
+              total_price: "5000",
+                update_date: "2021-04-28T05:06:09.000Z",
+                  input_date: "2021-04-28T05:06:09.000Z",
+                    id: "1",
+
+
+};
+const stockhistory = [
+  {
+    eqcode: "053200",
+    name: "삼성전자",
+    company: "키움증권",
+    category: "매수",
+    count: "6",
+    account: "0760446903201",
+    withdrawAmount: "- 240000",
+    depositAmount: "",
+    update_date: "2021.04.27  23:00:24",
+    input_date: "2021.04.27  23:00:24",
+    id: "1",
+  },
+  {
+    eqcode: "076200",
+    name: "NAVER",
+    company: "삼성증권",
+    category: "매도",
+    count: "1",
+    account: "0560427403201",
+    withdrawAmount: "+ 300000",
+    depositAmount: "+ 300000",
+    update_date: "2021.04.27  23:00:24",
+    input_date: "2021.04.29   07:35:44",
+    id: "2",
+  },
+];
+const sampletest2 = [
+  {
+    eqcode: "053200",
+    name: "삼성전자",
+    company: "키움증권",
+    count: "6",
+    selling_price: "80000",
+    purchasing_price: "40000",
+    total_price: "240000",
+    update_date: "2021-04-28T05:06:09.000Z",
+    input_date: "2021-04-28T05:06:09.000Z",
+    id: "1",
+  },
+  {
+    eqcode: "076200",
+    name: "NAVER",
+    company: "삼성증권",
+    count: "10",
+    selling_price: "300000",
+    purchasing_price: "350000",
+    total_price: "3500000",
+    update_date: "2021-04-28T05:06:09.000Z",
+    input_date: "2021-04-28T05:06:09.000Z",
+    id: "2",
+  },
+];
+const sampletest1 = [
+  123456,
+  "subin",
+  "syj",
+  3,
+  1000,
+  2000,
+  3000,
+  "2021-04-28T05:06:09.000Z",
+  "2021-04-28T05:06:09.000Z",
+];
+
+
+app.get("/test", function (req, res) {
+  // res.send(sampletest);
+  res.send(sampletest2);
+});
+
+app.get("/deposit", function (req, res) {
+  // res.send(sampletest);
+  res.send(deposit);
+});
+app.get("/history", function (req, res) {
+  // res.send(sampletest);
+  res.send(stockhistory);
+});
+
 // configuration =========================
 app.set("port", process.env.PORT || 3000);
 
